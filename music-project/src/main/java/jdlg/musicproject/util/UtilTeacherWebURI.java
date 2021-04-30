@@ -26,6 +26,7 @@ public enum UtilTeacherWebURI {
     /**
      * -------------------论坛--------------------------
      */
+    forumTeacher("../teacher/forum/teacher-forum.jsp"),
     /**
      * -------------------学生自学基础--------------------------
      */

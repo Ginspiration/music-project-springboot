@@ -137,13 +137,8 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a href="">
-                            <i class="fa fa-circle-o"></i> 回答问题
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="fa fa-circle-o"></i> 删除问题
+                        <a href="indexForum">
+                            <i class="fa fa-circle-o"></i> 进入论坛
                         </a>
                     </li>
                 </ul>

@@ -2,6 +2,7 @@ package student;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import jdlg.musicproject.dao.ForumDao;
 import jdlg.musicproject.entries.common.QuestionBank;
 import jdlg.musicproject.entries.student.StudentNamePwd;
 import jdlg.musicproject.entries.teacher.TeacherKnowledge;
@@ -191,5 +192,17 @@ public class TestStudent {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
         TeacherServiceMultimedia multimedia = (TeacherServiceMultimedia) ctx.getBean("teacherServiceMultimediaImpl");
         multimedia.deleteKnow("测试7", 20180906, 2011001);
+    }
+    @Test
+    public void test14() {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ForumDao forumDao = (ForumDao)ctx.getBean("forumDao");
+        System.out.println(forumDao.selectForumQuestionByCId(20190306,true,3,0,3));
+        System.out.println("----------------------------------");
+        //System.out.println(forumDao.selectForumIdByCId(20180309,0,2));
+    }
+    @Test
+    public void test15(){
+
     }
 }
