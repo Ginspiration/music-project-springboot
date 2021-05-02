@@ -9,6 +9,9 @@ public enum UtilTeacherWebURI {
      * -------------------新闻--------------------------
      */
 
+    /*添加新闻*/
+    teacherAddNewUri("../teacher/news/addNews.jsp"),
+
     /**
      * -------------------学生--------------------------
      */

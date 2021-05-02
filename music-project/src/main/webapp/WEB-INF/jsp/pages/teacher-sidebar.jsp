@@ -25,7 +25,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="">
+                        <a href="/doTeacher/showAddNews">
                             <i class="fa fa-circle-o"></i> 添加新闻
                         </a>
                     </li>
