@@ -6,7 +6,7 @@
 <mapper namespace="jdlg.musicproject.dao.NewsDao">
 
     <!--查询所有新闻-->
-    <select id="selectAllNew" resultType="news">
+    <select id="selectAllNews" resultType="news">
         select * from news
     </select>
 
