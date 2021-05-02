@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--工作空间，定位到dao的接口-->
+<mapper namespace="jdlg.musicproject.dao.NewsDao">
+
+    <!--查询所有新闻-->
+    <select id="selectAllNew" resultType="news">
+        select * from news
+    </select>
+
+    <!--根据新闻标题查询新闻-->
+    <select id="selectNewByTitle" resultType="news">
+        select * from news where news_title = '#{new_title}'
+    </select>
+
+    <!--添加新闻-->
+    <insert id="addNew" parameterType="news">
+        insert into news(new_title, new_context, new_img_url, new_mark)
+        values ('#{newTitle}','#{newContext}','#{new_img_url}','#{newMark}')
+    </insert>
+
+    <!--根据新闻id删除新闻-->
+    <delete id="deleteNew" parameterType="int">
+        delete from news
+        where id = #{id}
+    </delete>
+
+    <!--更新新闻-->
+    <update id="updateNew" parameterType="news">
+        update news
+        set new_title = '#{new_Title}',
+        new_context = '#{newContext}',
+        new_img_url = '#{newImgUrl}',
+        new_mark = '#{newMark}'
+    </update>
+
+</mapper>
