@@ -5,9 +5,9 @@ public class News {
     private String newTitle;
     private String newContext;
     private String newImgUrl;
-    private String newMark;
+    private Integer newMark;
 
-    public String getNewMark() {
+    public Integer getNewMark() {
         return newMark;
     }
 
@@ -21,7 +21,7 @@ public class News {
                 '}';
     }
 
-    public void setNewMark(String newMark) {
+    public void setNewMark(Integer newMark) {
         this.newMark = newMark;
     }
 
