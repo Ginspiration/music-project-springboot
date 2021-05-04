@@ -1,5 +1,6 @@
 package jdlg.musicproject.controller.doteacher;
 
+import jdlg.musicproject.entries.common.News;
 import jdlg.musicproject.service.NewsService;
 import jdlg.musicproject.service.StudentService;
 import jdlg.musicproject.service.TeacherService;
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/doTeacher")
@@ -31,8 +34,6 @@ public class DoNews {
     public ModelAndView showAddNews(HttpServletRequest request, HttpSession session){
         ModelAndView mv = new ModelAndView();
         request.setAttribute("Context", UtilTeacherWebURI.teacherAddNewUri.getUri());
-        String myWebUrl = System.getProperty("MyWebUrl");
-        System.out.println(myWebUrl);
         mv.setViewName("index/index-teacher");
         return mv;
     }
@@ -56,7 +57,7 @@ public class DoNews {
     public int  addNews(@RequestParam("files") CommonsMultipartFile[] file,
                         String title, String context, String marked, HttpServletRequest request){
 
-        //文件上传
+        /*文件上传*/
         //上传路径保存设置
         String path = request.getSession().getServletContext().getRealPath("/static/newsImg");
         File realPath = new File(path);
@@ -70,14 +71,34 @@ public class DoNews {
         for(int i = 0; i < file.length ; i++){
             MultipartFile file1 = file[i];
             try {
-                file1.transferTo(new File(realPath +"/"+ file[i].getOriginalFilename()));
+                File file2 = new File(realPath + "/" + file[i].getOriginalFilename());
+                file1.transferTo(file2);
             } catch (IOException e) {
                 return 1001; //返回1001：文件上传失败
             }
         }
 
-
-
+        /*数据库存储信息*/
+        News news = new News();
+        news.setNewContext(context);
+        news.setNewTitle(title);
+        //对于文件路径，需循环保存，分隔符为&*&
+        String url = path;
+        for (int i = 0;i < file.length; i++){
+            url += file[i].getOriginalFilename() + "&*&";
+        }
+        news.setNewImgUrl(url);
+        //判断marked
+        if(marked == "marked")
+            news.setNewMark(1);
+        else
+            news.setNewMark(0);
+        System.out.println(news);
+        List<News> newsList = newsService.selectAllNews();
+        for (News news1 : newsList) {
+            System.out.println(news1);
+        }
+        newsService.addNew(news);
         return 1000;
     }
 

@@ -5,20 +5,29 @@
 <!--工作空间，定位到dao的接口-->
 <mapper namespace="jdlg.musicproject.dao.NewsDao">
 
+    <!--Map映射封装实体类字段-->
+    <resultMap id="news" type="jdlg.musicproject.entries.common.News" >
+        <id property="id" column="id" />
+        <result property="newTitle" column="new_title" />
+        <result property="newContext" column="new_context"/>
+        <result property="newImgUrl" column="new_img_url"/>
+        <result property="newMark" column="new_mark" />
+    </resultMap>
+
     <!--查询所有新闻-->
-    <select id="selectAllNews" resultType="jdlg.musicproject.entries.common.News">
+    <select id="selectAllNews" resultMap="news">
         select * from news
     </select>
 
     <!--根据新闻标题查询新闻-->
-    <select id="selectNewByTitle" resultType="jdlg.musicproject.entries.common.News">
-        select * from news where news_title = '#{new_title}'
+    <select id="selectNewByTitle" resultMap="news">
+        select * from news where new_title = '${new_title}'
     </select>
 
     <!--添加新闻-->
     <insert id="addNew" parameterType="jdlg.musicproject.entries.common.News">
         insert into news(new_title, new_context, new_img_url, new_mark)
-        values ('#{newTitle}','#{newContext}','#{new_img_url}',#{newMark})
+        values ('${newTitle}','${newContext}','${newImgUrl}',${newMark})
     </insert>
 
     <!--根据新闻id删除新闻-->

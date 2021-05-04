@@ -1,6 +1,5 @@
 package jdlg.musicproject.controller.doteacher;
 
-import jdk.internal.util.xml.impl.Input;
 import jdlg.musicproject.dao.TeacherDao;
 import jdlg.musicproject.dao.TeacherDaoMultimedia;
 import jdlg.musicproject.entries.teacher.TeacherAppreciate;
@@ -9,8 +8,6 @@ import jdlg.musicproject.entries.teacher.TeacherKnowledge;
 import jdlg.musicproject.service.TeacherServiceMultimedia;
 import jdlg.musicproject.service.impl.TeacherServiceMultimediaImpl;
 import jdlg.musicproject.util.UtilTeacherWebURI;
-import jdlg.musicproject.util.doWrite;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;

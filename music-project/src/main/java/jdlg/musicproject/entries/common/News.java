@@ -2,10 +2,19 @@ package jdlg.musicproject.entries.common;
 
 public class News {
 
+    private Integer id;
     private String newTitle;
     private String newContext;
     private String newImgUrl;
     private Integer newMark;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getNewMark() {
         return newMark;

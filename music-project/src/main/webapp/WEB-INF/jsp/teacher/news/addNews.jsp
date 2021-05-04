@@ -17,13 +17,15 @@
     function dosubmit() {
 
         var thisData = new FormData();
+        let marked
 
         //判断推荐新闻mark是否选中
         if($('#mark').is(':checked')) {
             // 不设置，默认值为marked
+            marked = "marked"
         }else{
             //设false
-            let marked = "false"
+            marked = "false"
         }
 
         let title = $("#title").val();
