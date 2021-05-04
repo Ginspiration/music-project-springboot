@@ -16,8 +16,8 @@ public interface NewsDao {
     /* x:添加新闻 */
     int addNew(News news);
 
-    /* x:根据新闻id删除新闻 */
-    int deleteNew(@Param("id")Integer id);
+    /* x:根据新闻标题删除新闻 */
+    int deleteNew(@Param("newTitle")String newTitle);
 
     /* x:更新新闻 */
     int updateNew(News news);

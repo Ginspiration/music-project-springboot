@@ -30,8 +30,8 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public int deleteNew(int id) {
-        return newsDao.deleteNew(id);
+    public int deleteNew(String newTitle) {
+        return newsDao.deleteNew(newTitle);
     }
 
     @Override

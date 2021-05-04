@@ -31,18 +31,19 @@
     </insert>
 
     <!--根据新闻id删除新闻-->
-    <delete id="deleteNew" parameterType="int">
+    <delete id="deleteNew">
         delete from news
-        where id = #{id}
+        where new_title = '${newTitle}'
     </delete>
 
     <!--更新新闻-->
-    <update id="updateNew" parameterType="jdlg.musicproject.entries.common.News">
+    <update id="updateNew">
         update news
-        set new_title = '#{new_Title}',
-        new_context = '#{newContext}',
-        new_img_url = '#{newImgUrl}',
-        new_mark = #{newMark}
+        set new_title = '${newTitle}',
+        new_context = '${newContext}',
+        new_img_url = '${newImgUrl}',
+        new_mark = ${newMark}
+        where id = ${id}
     </update>
 
 </mapper>
