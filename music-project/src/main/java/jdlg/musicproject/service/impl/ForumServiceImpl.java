@@ -1,5 +1,7 @@
 package jdlg.musicproject.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import jdlg.musicproject.dao.ForumDao;
 import jdlg.musicproject.entries.common.ForumAnswer;
 import jdlg.musicproject.entries.common.ForumQuestion;
@@ -7,7 +9,9 @@ import jdlg.musicproject.service.ForumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ForumServiceImpl implements ForumService {
@@ -22,7 +26,8 @@ public class ForumServiceImpl implements ForumService {
 
     @Override
     public String addForumQuestion(ForumQuestion forumQuestion) {
-        if (!forumQuestion.equals(null)) {
+        if (forumQuestion != null) {
+            forumQuestion.setContext(forumQuestion.getContext().replace("'","\'").replace("\n","<br/>"));
             if (forumDao.insertForumQuestion(forumQuestion) != 1)
                 return systemError;
             else
@@ -33,7 +38,8 @@ public class ForumServiceImpl implements ForumService {
 
     @Override
     public String addForumAnswer(ForumAnswer answer) {
-        if (!answer.equals(null)) {
+        if (answer != null) {
+            answer.setAnswer(answer.getAnswer().replace("'","\'").replace("\n","<br/>"));
             if (forumDao.insertForumAnswer(answer) != 1)
                 return systemError;
             else
@@ -43,17 +49,26 @@ public class ForumServiceImpl implements ForumService {
     }
 
     @Override
-    public List<Integer> selectForumIdByCId(Integer cId, Integer index, Integer pageSize) {
+    public Map<Integer, List<Integer>> selectForumIdByCId(Integer cId,String find ,Integer index, Integer pageSize) {
         if (cId != null && index != null && pageSize != null) {
-            return forumDao.selectForumIdByCId(cId, index, pageSize);
+            Map<Integer, List<Integer>> map = new HashMap<>(1);
+            Page<Object> page = PageHelper.startPage(index, pageSize);
+            List<Integer> queIds = null;
+            if (find == null) {
+                queIds = forumDao.selectForumIdByCId(cId,find);
+            }else {
+                queIds = forumDao.selectForumIdByCId(cId,"%"+find+"%");
+            }
+            map.put(page.getPages(), queIds);
+            return map;
         } else
             return null;
     }
 
     @Override
-    public List<ForumQuestion> queryForumQuestionByCId(Integer cId,Boolean homePageFlag,Integer qId , Integer indexAnswer, Integer answerPageSize) {
+    public List<ForumQuestion> queryForumQuestionByCId(Integer cId, Boolean homePageFlag, Integer qId, Integer indexAnswer, Integer answerPageSize) {
         if (cId != null && qId != null && indexAnswer != null && answerPageSize != null) {
-            return forumDao.selectForumQuestionByCId(cId,homePageFlag, qId, indexAnswer, answerPageSize);
+            return forumDao.selectForumQuestionByCId(cId, homePageFlag, qId, indexAnswer, answerPageSize);
         } else
             return null;
     }
@@ -67,5 +82,13 @@ public class ForumServiceImpl implements ForumService {
                 return delete;
         } else
             return systemError;
+    }
+
+    @Override
+    public Integer queryForumCommentCountByQid(Integer queId) {
+        if (queId != null) {
+            return forumDao.selectForumCommentCountByQid(queId);
+        } else
+            return null;
     }
 }

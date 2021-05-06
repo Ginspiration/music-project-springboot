@@ -73,6 +73,13 @@
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
+                <ul class="treeview-menu">
+                    <li>
+                        <a href="indexForum">
+                            <i class="fa fa-circle-o"></i>进入论坛
+                        </a>
+                    </li>
+                </ul>
             </li>
             <%--提问--%>
 

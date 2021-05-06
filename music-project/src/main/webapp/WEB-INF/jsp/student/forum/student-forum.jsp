@@ -10,7 +10,7 @@
     <script>
         $(function () {
             ajaxShowCourses()
-            ajaxShowForumTitle('showQueIdByCid')
+
             //Tab键排版
             $("textarea").on(
                 'keydown',
@@ -33,17 +33,18 @@
 
         function ajaxShowCourses() {
             $.ajax({
-                url: "addWork/showCourses",
+                url: "showCourse",
                 type: "post",
-                async: false,
                 success: function (rep) {
+                    courses = rep
                     $.each(rep, function (i, res) {
+                        //alert(res.courseName)
                         $("#selected").append("<option value=" + res.courseId + ">" + res.courseName + "</option>")
                     })
+                    ajaxShowForumTitle('showQueIdByCid')
                 }
             })
         }
-
         var indexBig = 1;
         var pageSizeBig = 5;
         var totalPages = 0;
@@ -89,10 +90,9 @@
                                         "                            <div>\n" +
                                         "                                <span>\n" +
                                         "                                <a style=\"font-size: 20px;\" href=\"showQuestionDetail?cId=" + res.courseId + "&queId=" + res.queId + "\">\n" +
-                                        "                                 " + res.context + " \n" +
+                                        "                                 " + res.context + "   \n" +
                                         "                                </a>\n" +
-                                        "                                    <div class='text-right'> <button onclick='deleteQuestion("+res.queId+")' class='btn btn-danger'>删除</button></div>                                " +
-                                        "                                   </span>\n" +
+                                        "                                </span>\n" +
                                         "                                <br/>\n" +
                                         "                            </div>\n" +
                                         "                            <p>\n")
@@ -173,7 +173,7 @@
                     type:'post',
                     data:{
                         courseId:cId,
-                        name:'${sessionScope.tName}',
+                        name:'${sessionScope.sName}',
                         context:textArea
                     },
                     dataType:'text',
@@ -188,31 +188,6 @@
             }else
                 alert('输入提问内容！')
         }
-        function deleteQuestion(queId) {
-            confirm({
-                title: '确认删除',
-                content: '',
-                doneText: '确认',
-                cancelText: '取消'
-            }).then(() => {
-                //console.log('已确认')
-                $.ajax({
-                    url:'deleteQuestion',
-                    type:'post',
-                    dataType:'text',
-                    data: {queId: queId},
-                    success:function (resp) {
-                        alert(resp)
-                        setTimeout(function () {
-                            //方法体
-                            window.location.href=''
-                        },1000)
-                    }
-                })
-            }).catch(() => {
-                //console.log('已取消')
-            })
-        }
     </script>
     <style>
         a:hover {
@@ -225,8 +200,8 @@
     <!-- 内容头部 -->
     <section class="content-header">
         <h1>
-            ${sessionScope.tName}
-            <small>(教师)</small>
+            ${sessionScope.sName}
+            <small>(学生)</small>
         </h1>
     </section>
 
@@ -294,7 +269,7 @@
                     <hr/>
                     <!-- Post -->
                     <div id="thisContent">
-                        <%--<div class="post">
+                        <div class="post">
                             <div>
                                 <span class="username">
                                 <a style="font-size: 20px;" href="">
@@ -307,7 +282,8 @@
                             <p>
 
                             </p>
-                        </div>--%>
+
+                        </div>
                     </div>
                 </div>
             </div>

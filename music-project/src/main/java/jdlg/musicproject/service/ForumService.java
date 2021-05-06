@@ -5,6 +5,7 @@ import jdlg.musicproject.entries.common.ForumQuestion;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ForumService {
     /**
@@ -28,7 +29,7 @@ public interface ForumService {
      * @param pageSize
      * @return
      */
-    List<Integer> selectForumIdByCId(Integer cId,Integer index,Integer pageSize);
+    Map<Integer,List<Integer>> selectForumIdByCId(Integer cId, String find,Integer index, Integer pageSize);
 
     /**
      * 通过课程id获取所有问题
@@ -43,4 +44,11 @@ public interface ForumService {
      * @return
      */
     String deleteForumByQuestionId(Integer queId);
+
+    /**
+     * 获取评论记录总条数
+     * @param queId
+     * @return
+     */
+    Integer queryForumCommentCountByQid(@Param("queId")Integer queId);
 }

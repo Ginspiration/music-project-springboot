@@ -197,7 +197,7 @@ public class TestStudent {
     public void test14() {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
         ForumDao forumDao = (ForumDao)ctx.getBean("forumDao");
-        System.out.println(forumDao.selectForumQuestionByCId(20190306,true,3,0,3));
+        System.out.println(forumDao.selectForumQuestionByCId(20190306,null,2,10,10));
         System.out.println("----------------------------------");
         //System.out.println(forumDao.selectForumIdByCId(20180309,0,2));
     }

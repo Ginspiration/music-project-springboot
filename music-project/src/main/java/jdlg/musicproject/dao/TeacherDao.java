@@ -16,6 +16,8 @@ public interface TeacherDao {
     //String selectTeacherPwd(@Param("t_name") String tName);
     TeacherNamePwd selectTchNameById(@Param("t_id") Integer tId);
 
+    String selectNameBytId(@Param("t_id")Integer tId);
+
     int insertTeacher(Teacher teacher);
 
     int insertTchPwdName(TeacherAdmin tchAdmin);

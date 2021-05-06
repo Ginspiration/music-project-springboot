@@ -23,7 +23,8 @@ public enum UtilStudentWebURI {
     /**
      * -------------------论坛--------------------------
      */
-
+    forumStudent("../student/forum/student-forum.jsp"),
+    forumStudentDetail("../student/forum/student-forum-detail.jsp"),
     /**
      * -------------------考核--------------------------
      */

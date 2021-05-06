@@ -111,11 +111,9 @@
         <resources>
             <resource>
                 <directory>src/main/java</directory>
-                <includes>
-                    <!--拷贝mapper文件-->
-                    <include>**/*.xml</include>
-                    <include>**/*.properties</include>
-                </includes>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>

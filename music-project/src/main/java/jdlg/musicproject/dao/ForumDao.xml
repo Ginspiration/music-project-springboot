@@ -7,33 +7,37 @@
     <insert id="insertForumQuestion">
         insert into forum_question
             (que_id, course_id, name, context, up_date)
-        values (${queId}, ${courseId}, '${name}', '${context}', now())
+        values (#{queId}, #{courseId}, #{name}, #{context}, now())
     </insert>
     <insert id="insertForumAnswer">
         insert into forum_answer
             (que_id, name, answer, up_date)
-        VALUES (${queId}, '${name}', '${answer}', now())
+        VALUES (#{queId}, #{name}, #{answer}, now())
     </insert>
     <select id="selectForumIdByCId" resultType="java.lang.Integer">
         select que_id
         from forum_question
-        where course_id = ${c_id}
-        order by up_date
-        limit #{index},#{page_size}
+        where course_id = #{c_id}
+        <if test="find != null">
+            and context like #{find}
+        </if>
+        order by up_date desc
+
     </select>
     <select id="selectForumQuestionByCId" resultMap="Question">
         select q.que_id qId,
         q.course_id cId,
         q.`name` qName,
         q.context,
-        q.up_date qDate,
+        LEFT(q.up_date,19) qDate,
+        # q.up_date qDate,
         a.id aId,
         a.que_id aQId,
         a.`name` aName,
         # a.answer,
         <choose>
             <when test="HomePageFlag != null">
-                LEFT(a.answer,20) answer,
+                LEFT(a.answer,50) answer,
                 a.up_date aDate
                 from
                 forum_answer a
@@ -42,19 +46,20 @@
                 ON q.que_id = a.que_id
                 where q.course_id = #{c_id}
                 and q.que_id =#{q_id}
-                ORDER BY q.up_date
+                # ORDER BY q.up_date desc
                 LIMIT 0,1
             </when>
             <otherwise>
-                a.answer,
+                # a.answer,
+                REPLACE(REPLACE(a.answer,' ','&amp;nbsp;'),'\t','&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;') answer,
                 a.up_date aDate
                 from forum_answer a
                 RIGHT JOIN forum_question q
                 ON q.que_id = a.que_id
                 where q.course_id = #{c_id}
                 and q.que_id =#{q_id}
-                ORDER BY q.up_date
-                LIMIT ${index_answer},${answer_page_size}
+                ORDER BY q.up_date desc
+                limit #{index_answer},#{answer_page_size}
             </otherwise>
         </choose>
 
@@ -77,7 +82,9 @@
     <delete id="deleteForumByQuestionId">
         delete
         from forum_question
-        where que_id = ${que_id}
+        where que_id = #{que_id}
     </delete>
-
+    <select id="selectForumCommentCountByQid" resultType="java.lang.Integer">
+        select COUNT(*) from forum_answer where que_id = #{queId}
+    </select>
 </mapper>

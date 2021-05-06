@@ -57,33 +57,8 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a href="">
-                            <i class="fa fa-circle-o"></i> 搜索学员
-                        </a>
-                    </li>
-                    <li>
-                        <a href="addStudent">
-                            <i class="fa fa-circle-o"></i> 添加学员
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="fa fa-circle-o"></i> 删除学员
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="fa fa-circle-o"></i> 修改学员
-                        </a>
-                    </li>
-                    <li>
-                        <a href="unusedStudent">
-                            <i class="fa fa-circle-o"></i> 禁用学员
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="fa fa-circle-o"></i> 重置学生密码
+                        <a href="studentManagePermitIndex">
+                            <i class="fa fa-circle-o"></i> 管理员
                         </a>
                     </li>
                 </ul>
@@ -199,8 +174,8 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a href="webManagement">
-                            <i class="fa fa-circle-o"></i> 网站管理
+                        <a href="webSettingPermitIndex">
+                            <i class="fa fa-circle-o"></i> 管理员
                         </a>
                     </li>
                 </ul>

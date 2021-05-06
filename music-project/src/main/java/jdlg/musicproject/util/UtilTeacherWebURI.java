@@ -16,6 +16,7 @@ public enum UtilTeacherWebURI {
     studentDisableUri("../teacher/stu/disable-student.jsp"),
     /*添加学生*/
     studentAddUri("../teacher/stu/add-student.jsp"),
+    studentManage("../teacher/stu/advanced-permissions-student.jsp"),
 
     /**
      * -------------------课程--------------------------
@@ -27,6 +28,7 @@ public enum UtilTeacherWebURI {
      * -------------------论坛--------------------------
      */
     forumTeacher("../teacher/forum/teacher-forum.jsp"),
+    forumTeacherDetail("../teacher/forum/teacher-forum-detail.jsp"),
     /**
      * -------------------学生自学基础--------------------------
      */

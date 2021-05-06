@@ -7,6 +7,9 @@
     <select id="selectTchNameById" resultType="jdlg.musicproject.entries.teacher.TeacherNamePwd">
         select tch_admin.tch_password t_pwd,teacher.teacher_name t_name FROM teacher,tch_admin where  tch_admin.admin_tch_id = teacher.teacher_id AND teacher.teacher_id = '${t_id}'
     </select>
+    <select id="selectTeacherBytId" resultType="java.lang.String">
+        select teacher_name from teacher where teacher_id = #{t_id}
+    </select>
     <insert id="insertTeacher">
         insert into teacher (teacher_id,teacher_name) values (${teacher_id},'${teacher_name}')
     </insert>

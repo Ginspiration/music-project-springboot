@@ -27,13 +27,9 @@ public interface ForumDao {
     /**
      * 获取分页的提问id
      * @param cId
-     * @param index
-     * @param pageSize
      * @return
      */
-    List<Integer> selectForumIdByCId(@Param("c_id")Integer cId,
-                                     @Param("index")Integer index,
-                                     @Param("page_size")Integer pageSize);
+    List<Integer> selectForumIdByCId(@Param("c_id")Integer cId,@Param("find")String find);
 
     /**
      * 通过课程id获取所有问题
@@ -54,4 +50,12 @@ public interface ForumDao {
      * @return
      */
     int deleteForumByQuestionId(@Param("que_id") Integer queId);
+
+    /**
+     * 获取评论记录总条数
+     * @param queId
+     * @return
+     */
+    Integer selectForumCommentCountByQid(@Param("queId")Integer queId);
+
 }
