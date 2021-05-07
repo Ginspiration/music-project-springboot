@@ -84,9 +84,11 @@ public class DoNews {
         //存储标题前，需先查找是否有重复标题
         List<News> getTitleList = newsService.selectAllNews();
         for (News news1 : getTitleList) {
-            if( news1.getNewTitle() == title )
+            if( news1.getNewTitle().equals(title) ){
+                System.out.println(news1.getNewTitle());
+                System.out.println(title);
                 return 1002;    //返回错误：标题重复
-            System.out.println(news1.getNewTitle());
+            }
         }
         news.setNewTitle(title);
         //对于文件路径，需循环保存，分隔符为&*&
