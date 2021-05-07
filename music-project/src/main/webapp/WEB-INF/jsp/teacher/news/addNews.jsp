@@ -69,7 +69,14 @@
                 //不设置内容类型
                 contentType: false,
                 success: function (data) {
-
+                    if ( data == 1000){
+                        alert("添加成功")
+                    }else if(data == 1001){
+                        alert("文件上传失败")
+                    }else if(data == 1002){
+                        alert("标题重复")
+                        title = "";
+                    }
                 }
             })
 

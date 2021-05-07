@@ -78,15 +78,25 @@ public class DoNews {
             }
         }
 
-        /*数据库存储信息*/
+        /*对象存储信息*/
         News news = new News();
         news.setNewContext(context);
+        //存储标题前，需先查找是否有重复标题
+        List<News> getTitleList = newsService.selectAllNews();
+        for (News news1 : getTitleList) {
+            if( news1.getNewTitle() == title )
+                return 1002;    //返回错误：标题重复
+            System.out.println(news1.getNewTitle());
+        }
         news.setNewTitle(title);
         //对于文件路径，需循环保存，分隔符为&*&
         String url = path;
         for (int i = 0;i < file.length; i++){
             url += file[i].getOriginalFilename() + "&*&";
+            System.out.println(url);
         }
+        //文件路径转义
+        url = url.replace("\\", "\\\\");
         news.setNewImgUrl(url);
         //判断marked
         if(marked == "marked")
@@ -94,10 +104,6 @@ public class DoNews {
         else
             news.setNewMark(0);
         System.out.println(news);
-        List<News> newsList = newsService.selectAllNews();
-        for (News news1 : newsList) {
-            System.out.println(news1);
-        }
         newsService.addNew(news);
         return 1000;
     }
