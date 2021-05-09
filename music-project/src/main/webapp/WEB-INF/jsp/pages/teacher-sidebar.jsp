@@ -20,28 +20,13 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a href="">
-                            <i class="fa fa-circle-o"></i> 查找新闻
+                        <a href="viewNews">
+                            <i class="fa fa-circle-o"></i> 新闻列表
                         </a>
                     </li>
                     <li>
                         <a href="showAddNews">
                             <i class="fa fa-circle-o"></i> 添加新闻
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="fa fa-circle-o"></i> 修改新闻
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="fa fa-circle-o"></i> 删除新闻
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <i class="fa fa-circle-o"></i> 推荐新闻
                         </a>
                     </li>
                 </ul>

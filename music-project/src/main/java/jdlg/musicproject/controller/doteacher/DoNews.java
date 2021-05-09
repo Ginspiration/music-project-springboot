@@ -1,11 +1,13 @@
 package jdlg.musicproject.controller.doteacher;
 
+import com.github.pagehelper.PageHelper;
 import jdlg.musicproject.entries.common.News;
 import jdlg.musicproject.service.NewsService;
 import jdlg.musicproject.service.StudentService;
 import jdlg.musicproject.service.TeacherService;
 import jdlg.musicproject.util.UtilTeacherWebURI;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -109,4 +111,20 @@ public class DoNews {
         newsService.addNew(news);
         return 1000;
     }
+
+    /*查看新闻*/
+    @GetMapping("viewNews")
+    public ModelAndView viewNews(Model model, HttpServletRequest request){
+        ModelAndView mv = new ModelAndView();
+        request.setAttribute("Context", UtilTeacherWebURI.teacherViewNews.getUri());
+
+        /*需先查找所有新闻并传送前端*/
+        //使用pagehelper分页获取
+        PageHelper.startPage(1,5);
+        List<News> newsList = newsService.selectAllNews();
+        model.addAttribute("news",newsList);
+        mv.setViewName("index/index-teacher");
+        return mv;
+    }
+
 }

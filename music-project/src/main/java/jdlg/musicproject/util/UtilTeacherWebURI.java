@@ -11,6 +11,8 @@ public enum UtilTeacherWebURI {
 
     /*添加新闻*/
     teacherAddNewUri("../teacher/news/addNews.jsp"),
+    /*查看新闻*/
+    teacherViewNews("../teacher/news/viewNews.jsp"),
 
     /**
      * -------------------学生--------------------------
