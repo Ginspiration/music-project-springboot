@@ -109,5 +109,4 @@ public class DoNews {
         newsService.addNew(news);
         return 1000;
     }
-
 }

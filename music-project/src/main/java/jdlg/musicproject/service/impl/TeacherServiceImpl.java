@@ -27,6 +27,11 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public String queryNameBytId(Integer tId) {
+        return teacherDao.selectNameBytId(tId);
+    }
+
+    @Override
     public int addTeacher(Teacher teacher) {
         return teacherDao.insertTeacher(teacher);
     }

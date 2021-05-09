@@ -16,6 +16,8 @@ public interface TeacherService {
     //String teacherLogin(String tName);
     TeacherNamePwd tchLoginById(Integer tchId);
 
+    String queryNameBytId(@Param("t_id")Integer tId);
+
     int addTeacher(Teacher teacher);
 
     int addTchPwdName(TeacherAdmin tchAdmin);
