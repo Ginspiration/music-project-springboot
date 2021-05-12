@@ -2,7 +2,32 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
+<script>
 
+    /*跳页*/
+    function turnPage(updatePage) {
+
+        if(updatePage == '1' ){
+            alert("1")
+            $.ajax({
+                url: 'nextPage',
+                data: {
+                    nowPage:1,
+                    updatePage:1
+                },
+                dataType: 'json',
+                type: 'post',
+                success: function (x) {
+                    alert("11")
+                },
+                error:function () {
+                    alert("${nowPage}")
+                }
+            })
+        }
+
+    }
+</script>
 
 <div class="content-wrapper">
     <!-- 内容头部 -->
@@ -54,7 +79,20 @@
 
                             </div>
                         </div>
+
+
                     </c:forEach>
+                    <%--分页--%>
+                    <ul class="pagination pagination-sm inline" id="publishedPages">
+                        <li id='totalPages'><a>共${totalpage}页</a></li>
+                        <li><a href="turnPage?nowPage=1&updatePage=0">首页</a></li>
+                        <li><a>第</a></li>
+                        <li><a href="turnPage?nowPage=${nowPage}&updatePage=-1">&laquo;</a></li>     <%--左箭头--%>
+                        <li><a> ${nowPage} </a></li>
+                        <li><a href="turnPage?nowPage=${nowPage}&updatePage=1">&raquo;</a></li>               <%--右箭头--%>
+                        <li><a>页</a></li>
+                        <li><a href="turnPage?nowPage=${totalPage}&updatePage=0">尾页</a></li>
+                    </ul>
 
                     <hr/>
                     <!-- Post -->
