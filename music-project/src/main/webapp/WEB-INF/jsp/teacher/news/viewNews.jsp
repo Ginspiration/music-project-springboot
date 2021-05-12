@@ -50,7 +50,7 @@
                                 color:#8a8a8a;
                                 float:right;
                                 position: relative;
-                                right: 10px;top : 30px;">发布时间${news.upDate}</span>
+                                right: 10px;top : 30px;">发布时间:${news.upDate}</span>
 
                             </div>
                         </div>

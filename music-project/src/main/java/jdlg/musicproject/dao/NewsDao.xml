@@ -12,6 +12,7 @@
         <result property="newContext" column="new_context"/>
         <result property="newImgUrl" column="new_img_url"/>
         <result property="newMark" column="new_mark" />
+        <result property="upDate" column="up_date" />
     </resultMap>
 
     <!--查询所有新闻-->
@@ -26,8 +27,8 @@
 
     <!--添加新闻-->
     <insert id="addNew" parameterType="jdlg.musicproject.entries.common.News">
-        insert into news(new_title, new_context, new_img_url, new_mark)
-        values ('${newTitle}','${newContext}','${newImgUrl}',${newMark})
+        insert into news(new_title, new_context, new_img_url, new_mark, up_date)
+        values ('${newTitle}','${newContext}','${newImgUrl}',${newMark}, now())
     </insert>
 
     <!--根据新闻id删除新闻-->

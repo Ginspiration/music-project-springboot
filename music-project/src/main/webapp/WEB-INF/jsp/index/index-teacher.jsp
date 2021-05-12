@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <%--网站地址--%>
 <%@include file="../pages/web-url.jsp" %>
 <%

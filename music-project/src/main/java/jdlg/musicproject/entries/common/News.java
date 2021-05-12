@@ -7,6 +7,15 @@ public class News {
     private String newContext;
     private String newImgUrl;
     private Integer newMark;
+    private String upDate;
+
+    public String getUpDate() {
+        return upDate;
+    }
+
+    public void setUpDate(String upDate) {
+        this.upDate = upDate;
+    }
 
     public Integer getId() {
         return id;
@@ -23,10 +32,12 @@ public class News {
     @Override
     public String toString() {
         return "News{" +
-                "newTitle='" + newTitle + '\'' +
+                "id=" + id +
+                ", newTitle='" + newTitle + '\'' +
                 ", newContext='" + newContext + '\'' +
                 ", newImgUrl='" + newImgUrl + '\'' +
-                ", newMark='" + newMark + '\'' +
+                ", newMark=" + newMark +
+                ", upDate='" + upDate + '\'' +
                 '}';
     }
 
