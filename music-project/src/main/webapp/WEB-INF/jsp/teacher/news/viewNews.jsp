@@ -2,32 +2,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
-<script>
-
-    /*跳页*/
-    function turnPage(updatePage) {
-
-        if(updatePage == '1' ){
-            alert("1")
-            $.ajax({
-                url: 'nextPage',
-                data: {
-                    nowPage:1,
-                    updatePage:1
-                },
-                dataType: 'json',
-                type: 'post',
-                success: function (x) {
-                    alert("11")
-                },
-                error:function () {
-                    alert("${nowPage}")
-                }
-            })
-        }
-
-    }
-</script>
 
 <div class="content-wrapper">
     <!-- 内容头部 -->
@@ -42,7 +16,6 @@
         <div class="nav-tabs-custom">
             <div class="tab-content">
                 <div class="active tab-pane" id="activity">
-                    <div class="form-group">
                         <label style="color: #0d6aad"><h4>新闻列表</h4></label>
                         <%-- <select size="20" style="width:200px;font-size:12px" multiple>--%>
                         <br>
@@ -67,7 +40,7 @@
                         <div class="panel panel-default">
                             <div class="panel-body" style="">
                                 <%--展示标题--%>
-                                <a href="" >${news.newTitle} </a>
+                                <a href="newsDetail?newTitle=${news.newTitle}" >${news.newTitle} </a>
                                     <a href="" class="btn btn-danger" style="float: right;margin-left: 10px">删除</a>
                                     <a href="" class="btn btn-danger" style="float: right">修改</a>
                                 <%--展示发布时间--%>
@@ -121,11 +94,3 @@
 
 </div>
 
-<script>
-
-    //输出新闻
-    window.onload=function () {
-
-    }
-
-</script>

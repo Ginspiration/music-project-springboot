@@ -60,18 +60,18 @@ public class DoNews {
         /*文件上传*/
         //上传路径保存设置
         String path = request.getSession().getServletContext().getRealPath("/static/newsImg");
-        File realPath = new File(path);
-        if (!realPath.exists()){
-            realPath.mkdir();
+        File filePath = new File(path);
+        if (!filePath.exists()){
+            filePath.mkdir();
         }
         //上传文件地址并保存realPath
-        System.out.println("上传文件保存地址："+realPath);
+        System.out.println("上传文件保存地址："+filePath);
 
         //通过CommonsMultipartFile的方法直接写文件（注意这个时候）
         for(int i = 0; i < file.length ; i++){
             MultipartFile file1 = file[i];
             try {
-                File file2 = new File(realPath + "/" + file[i].getOriginalFilename());
+                File file2 = new File(filePath + "/" + file[i].getOriginalFilename());
                 file1.transferTo(file2);
             } catch (IOException e) {
                 return 1001; //返回1001：文件上传失败
@@ -91,10 +91,14 @@ public class DoNews {
             }
         }
         news.setNewTitle(title);
-        //对于文件路径，需循环保存，分隔符为&*&
-        String url = path;
+        //对于文件路径，需循环保存，且为webapp的相对地址realPath。分隔符为&*&
+        String realPath = "static/newsImg/";
+        String url = "";
         for (int i = 0;i < file.length; i++){
-            url += file[i].getOriginalFilename() + "&*&";
+            if( i < file.length-1){
+                url += realPath + file[i].getOriginalFilename() + "&*&";
+            }else
+                url += realPath + file[i].getOriginalFilename();
             System.out.println(url);
         }
         //文件路径转义
@@ -193,6 +197,21 @@ public class DoNews {
     }
 
 
-//    /*新闻详情跳转*/
-//    @RequestMapping("newsDetail")
+    /*新闻详情跳转*/
+    @RequestMapping("/newsDetail")
+    public ModelAndView newsDetail(String newTitle,HttpServletRequest request,
+                                   HttpSession session){
+        ModelAndView mv = new ModelAndView();
+        request.setAttribute("Context", UtilTeacherWebURI.teacherViewNewsDetail.getUri());
+
+        //获取新闻对象
+        News news = newsService.selectNewByTitle(newTitle);
+
+        session.removeAttribute("news");
+        session.setAttribute("news",news);
+
+        mv.setViewName("index/index-teacher");
+        return mv;
+    }
+
 }
