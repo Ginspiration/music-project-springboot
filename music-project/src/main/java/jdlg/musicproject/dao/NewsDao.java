@@ -11,7 +11,7 @@ public interface NewsDao {
     List<News> selectAllNews();
 
     /* x:根据新闻标题查找新闻 */
-    List<News> selectNewByTitle(@Param("new_title")String newTitle);
+    News selectNewByTitle(@Param("new_title")String newTitle);
 
     /* x:添加新闻 */
     int addNew(News news);

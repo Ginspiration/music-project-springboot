@@ -20,7 +20,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<News> selectNewByTitle(String newTitle) {
+    public News selectNewByTitle(String newTitle) {
         return newsDao.selectNewByTitle(newTitle);
     }
 
