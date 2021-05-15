@@ -222,14 +222,14 @@
         <div class="nav-tabs-custom">
             <div class="tab-content" style="">
                 <div class="active tab-pane" id="activity">
-                    <h1 style="color: #0d6aad;text-align: center">${news.newTitle}</h1>
+                    <h2 style="color: #0c0c0c;">${news.newTitle}</h2>
                     <br>
 
                     <%--图片轮换html--%>
                     <div class="row">
                         <div class="col-sm-6">
                             <%--输出文字--%>
-                            <div style="">&nbsp;&nbsp;${news.newContext}</div>
+                            <div style="">${news.newContext}</div>
                         </div>
                         <div class="col-sm-offset-6">
                             <div class="lb-box form-group" id="lb-1">

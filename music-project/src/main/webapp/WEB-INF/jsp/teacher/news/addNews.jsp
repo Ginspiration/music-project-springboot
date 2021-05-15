@@ -51,7 +51,10 @@
             //3、将其他类型的数据放入formDate
             console.log($("#mark").val())
             thisData.append("title",$("input[name='title']").val())
-            thisData.append("context",$("textarea[name='context']").val())
+            //将context中的换行转为字符以被数据库识别
+            let context = $("#context").val()
+            context = context.replace(/\n/g,"<br/>")
+            thisData.append("context",context)
             thisData.append("marked",marked)
 
             //sleep
@@ -122,13 +125,12 @@
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body pad">
-                                        <textarea  name="context" class="textarea" placeholder="Place some text here"
+                                        <textarea  name="context" class="textarea"  onblur="a()" id="context"
                                                    style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
                             </div>
                         </div>
                         <label>图片添加</label>
                         <input type="file" onclick="" multiple="multiple" id="file"/><br/>
-                        <input type="button" name="addfile" onclick="addfile()" value="添加更多图片(未完成）"/>
                         <label class="checkbox-inline">
                             <input type="checkbox" id="mark" value="marked"> 标记为推荐新闻   <%--值有误--%>
                         </label>
