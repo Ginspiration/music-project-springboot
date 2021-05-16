@@ -10,6 +10,15 @@ public interface NewsDao {
     /* x:查询所有新闻 */
     List<News> selectAllNews();
 
+    /**
+     * 根据标记查找新闻
+     * @param newMark
+     * @return
+     */
+    List<News> selectNewsByMark(@Param("new_mark")Integer newMark);
+
+
+
     /* x:根据新闻标题查找新闻 */
     News selectNewByTitle(@Param("new_title")String newTitle);
 

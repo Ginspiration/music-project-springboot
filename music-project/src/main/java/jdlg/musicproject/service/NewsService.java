@@ -1,6 +1,7 @@
 package jdlg.musicproject.service;
 
 import jdlg.musicproject.entries.common.News;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,6 +12,13 @@ public interface NewsService {
 
     /* x:根据新闻标题查找新闻 */
     News selectNewByTitle(String newTitle);
+
+    /**
+     * 根据标记查找新闻
+     * @param newMark
+     * @return
+     */
+    List<News> selectNewsByMark(Integer newMark);
 
     /* x:添加新闻 */
     int addNew(News news);

@@ -20,6 +20,11 @@
         select * from news
     </select>
 
+    <!--根据标记查找新闻-->
+    <select id="selectNewsByMark" resultMap="news">
+        select * from news where new_mark = ${new_mark}
+    </select>
+
     <!--根据新闻标题查询新闻-->
     <select id="selectNewByTitle" resultMap="news">
         select * from news where new_title = '${new_title}'
