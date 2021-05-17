@@ -20,7 +20,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a href="viewNews">
+                        <a href="viewNews?nowPage=1&updatePage=0&mark=2">
                             <i class="fa fa-circle-o"></i> 新闻列表
                         </a>
                     </li>

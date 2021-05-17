@@ -3,6 +3,7 @@ package student;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import jdlg.musicproject.dao.ForumDao;
+import jdlg.musicproject.dao.NewsDao;
 import jdlg.musicproject.entries.common.QuestionBank;
 import jdlg.musicproject.entries.student.StudentNamePwd;
 import jdlg.musicproject.entries.teacher.TeacherKnowledge;
@@ -203,6 +204,10 @@ public class TestStudent {
     }
     @Test
     public void test15(){
+        ApplicationContext con = new ClassPathXmlApplicationContext("applicationContext.xml");
+        NewsDao dao = con.getBean("newDao", NewsDao.class);
+
+        System.out.println(dao.selectNewByTitle("new7"));
 
     }
 }

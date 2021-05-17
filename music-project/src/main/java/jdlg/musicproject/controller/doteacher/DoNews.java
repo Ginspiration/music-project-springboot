@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 @Controller
 @RequestMapping("/doTeacher")
@@ -122,76 +122,111 @@ public class DoNews {
      * @param session
      * @return
      */
-    @GetMapping("viewNews")
-    public ModelAndView viewNews(Model model, HttpServletRequest request,HttpSession session){
-        ModelAndView mv = new ModelAndView();
-        request.setAttribute("Context", UtilTeacherWebURI.teacherViewNews.getUri());
-
-        /*需先查找所有新闻并传送前端*/
-        //使用pagehelper分页获取
-        Page<Object> page = PageHelper.startPage(1,5);
-        List<News> newsList = newsService.selectAllNews();
-
-        //获取总页数
-        int totalPage = page.getPages();
-        //获取当前页
-        int nowPage = page.getPageNum();
-
-//        session设置会话
-        session.setAttribute("nowPage",nowPage);
-
-        session.setAttribute("totalPage", totalPage);
-
-        session.setAttribute("news",newsList);
-
-
-//        model.addAttribute("nowPage",nowPage);
-//        model.addAttribute("totalpage", totalpage);
-//        model.addAttribute("news",newsList);
-
-
-        mv.setViewName("index/index-teacher");
-        return mv;
-    }
+//    @GetMapping("viewNews")
+//    public ModelAndView viewNews(Model model, HttpServletRequest request,
+//                                 HttpSession session){
+//        ModelAndView mv = new ModelAndView();
+//        request.setAttribute("Context", UtilTeacherWebURI.teacherViewNews.getUri());
+//
+//        /*需先查找所有新闻并传送前端*/
+//        //使用pagehelper分页获取
+//        Page<Object> page = PageHelper.startPage(1,5);
+//        List<News> newsList = newsService.selectAllNews();
+//        //获取总页数
+//        int totalPage = page.getPages();
+//        //获取当前页
+//        int nowPage = page.getPageNum();
+//
+////        session设置会话
+//        session.setAttribute("nowPage",nowPage);
+//
+//        session.setAttribute("totalPage", totalPage);
+//
+//        session.setAttribute("news",newsList);
+//
+//
+////        model.addAttribute("nowPage",nowPage);
+////        model.addAttribute("totalpage", totalpage);
+////        model.addAttribute("news",newsList);
+//
+//
+//        mv.setViewName("index/index-teacher");
+//        return mv;
+//    }
 
     /**
-     * 页面改变并跳转
+     * 查看新闻列表，并可实现翻页功能
      * @param nowPage       当前页
      * @param updatePage    更新页
      * @param model
      * @param request
      * @param session
+     * @Param mark  判断搜索的范围，0为未标记，1为标记，2为全部
      * @return
      */
-    @GetMapping("turnPage")
+    @GetMapping("viewNews")
     public ModelAndView aPage(int nowPage, int updatePage,
                               Model model,HttpServletRequest request,
-                              HttpSession session){
-        System.out.println(nowPage + updatePage);
+                              HttpSession session,int mark){
         //求出跳转页数
         nowPage = nowPage + updatePage;
 
-        /*查找对应新闻并传送前端*/
-        //使用pagehelper分页获取
-        Page<Object> page = PageHelper.startPage(nowPage,5);
-        List<News> newsList = newsService.selectAllNews();
+        /*查找对应新闻并传送前端
+        * 使用pagehelper分页获取
+        * 通过mark选择对应搜索方法
+        * */
+        Page<Object> page;
+        List<News> newsList;
+        if(mark == 0){
+            page = PageHelper.startPage(nowPage,5);
+            newsList = newsService.selectNewsByMark(0);
+        }else if(mark == 1){
+            page = PageHelper.startPage(nowPage,5);
+            newsList = newsService.selectNewsByMark(1);
+        }else{
+            page = PageHelper.startPage(nowPage,5);
+            newsList = newsService.selectAllNews();
+        }
+
 
         //获取总页数
-        int totalpage = page.getPages();
+        int totalPage = page.getPages();
         //获取当前页
         nowPage = page.getPageNum();
 
         session.removeAttribute("nowPage");
         session.setAttribute("nowPage",nowPage);
 
-        session.removeAttribute("totalpage");
-        session.setAttribute("totalpage", totalpage);
+        session.removeAttribute("totalPage");
+        session.setAttribute("totalPage", totalPage);
+
+        session.removeAttribute("news");
+        session.setAttribute("news",newsList);
+
+        session.removeAttribute("mark");
+        session.setAttribute("mark",mark);
+
+        ModelAndView mv = new ModelAndView();
+        request.setAttribute("Context", UtilTeacherWebURI.teacherViewNews.getUri());
+        mv.setViewName("index/index-teacher");
+        return mv;
+    }
+    @GetMapping("selectNew")
+    public ModelAndView selectNew(HttpServletRequest req,HttpSession session){
+
+        String title = req.getParameter("title");
+        System.out.println(title);
+        List<News> newsList = newsService.selectNewByTitle(title);
+        System.out.println(newsList);
+
+        session.removeAttribute("mark");
+        session.setAttribute("mark",3);
 
         session.removeAttribute("news");
         session.setAttribute("news",newsList);
 
         ModelAndView mv = new ModelAndView();
-        request.setAttribute("Context", UtilTeacherWebURI.teacherViewNews.getUri());
+        req.setAttribute("Context", UtilTeacherWebURI.teacherViewNews.getUri());
         mv.setViewName("index/index-teacher");
         return mv;
     }
@@ -205,10 +240,11 @@ public class DoNews {
         request.setAttribute("Context", UtilTeacherWebURI.teacherViewNewsDetail.getUri());
 
         //获取新闻对象
-        News news = newsService.selectNewByTitle(newTitle);
+        List<News> news = newsService.selectNewByTitle(newTitle);
+        News news1 = news.get(0);
 
         session.removeAttribute("news");
-        session.setAttribute("news",news);
+        session.setAttribute("news",news1);
 
         mv.setViewName("index/index-teacher");
         return mv;
