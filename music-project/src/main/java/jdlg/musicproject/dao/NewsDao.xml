@@ -17,17 +17,17 @@
 
     <!--查询所有新闻-->
     <select id="selectAllNews" resultMap="news">
-        select * from news
+        select * from news order by up_date desc
     </select>
 
     <!--根据标记查找新闻-->
     <select id="selectNewsByMark" resultMap="news">
-        select * from news where new_mark = ${new_mark}
+        select * from news where new_mark = ${newMark} order by up_date desc
     </select>
 
     <!--根据新闻标题查询新闻-->
     <select id="selectNewByTitle" resultMap="news">
-        select * from news where new_title = '${new_title}'
+        select * from news where new_title = '${newTitle}'
     </select>
 
     <!--添加新闻-->

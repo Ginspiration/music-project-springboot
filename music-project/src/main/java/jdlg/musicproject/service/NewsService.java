@@ -11,7 +11,7 @@ public interface NewsService {
     List<News> selectAllNews();
 
     /* x:根据新闻标题查找新闻 */
-    News selectNewByTitle(String newTitle);
+    List<News> selectNewByTitle(String newTitle);
 
     /**
      * 根据标记查找新闻
