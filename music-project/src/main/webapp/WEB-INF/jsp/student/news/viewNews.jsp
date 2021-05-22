@@ -88,28 +88,13 @@
                                     <%--对标记新闻进行特别注释--%>
                                     <div style="float: left;margin-right: 10px">&nbsp;<c:if test="${news.newMark == 1}">*</c:if></div>
                                 <a href="newsDetail?newTitle=${news.newTitle}" >${news.newTitle} </a>
-                                    <button id="delete" onclick="deleteNew${status.count}()" class="btn btn-danger" style="float: right;margin-left: 10px;">删除</button>
-                                    <a href="updateNew?newTitle=${news.newTitle}" class="btn btn-danger" style="float: right">修改</a>
-                                    <script>
-                                        //删除新闻
-                                        function deleteNew${status.count}() {
-                                            confirm({
-                                                title: '确认删除？',
-                                                content: '',
-                                                doneText: '确认',
-                                                cancelText: '取消'
-                                            }).then(() => {
-                                                window.location.href="deleteNew?newTitle=${news.newTitle}&nowPage=${nowPage}&updatePage=0&mark=${mark}"
-                                            }).catch(() => {
-                                            })``
-                                        }
-                                    </script>
+
                                 <%--展示发布时间--%>
                                 <span style="font-size: 10px;
                                 color:#8a8a8a;
                                 float:right;
                                 position: relative;
-                                right: 10px;top : 30px;">发布时间:${news.upDate}</span>
+                                right: 10px;top : 10px;">发布时间:${news.upDate}</span>
 
                             </div>
                         </div>
@@ -120,9 +105,9 @@
                         <li id='totalPages'><a>共${totalPage}页</a></li>
                         <li><a href="viewNews?nowPage=1&updatePage=0&mark=${mark}">首页</a></li>
                         <li><a>第</a></li>
-                        <li><a href="viewNews?nowPage=${nowPage}&updatePage=-1&mark=${mark}">&laquo;</a></li>     <%--左箭头--%>
+                        <li><a href="viewNews?nowPage=${nowPage}&updatePage=-1&mark=${mark}" >&laquo;</a></li>     <%--左箭头--%>
                         <li><a> ${nowPage} </a></li>
-                        <li><a href="viewNews?nowPage=${nowPage}&updatePage=1&mark=${mark}">&raquo;</a></li>               <%--右箭头--%>
+                        <li><a href="viewNews?nowPage=${nowPage}&updatePage=1&mark=${mark}" >&raquo;</a></li>               <%--右箭头--%>
                         <li><a>页</a></li>
                         <li><a href="viewNews?nowPage=${totalPage}&updatePage=0&mark=${mark}">尾页</a></li>
                     </ul>

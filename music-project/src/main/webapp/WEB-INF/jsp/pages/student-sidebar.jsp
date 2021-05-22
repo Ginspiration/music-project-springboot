@@ -34,8 +34,8 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a href="">
-                            <i class="fa fa-circle-o"></i> 推荐新闻
+                        <a href="viewNews?nowPage=1&updatePage=0&mark=2">
+                            <i class="fa fa-circle-o"></i> 查看新闻
                         </a>
                     </li>
                 </ul>

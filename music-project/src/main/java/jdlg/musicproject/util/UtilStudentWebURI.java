@@ -8,7 +8,9 @@ public enum UtilStudentWebURI {
     /**
      * -------------------新闻--------------------------
      */
-
+    /*新闻列表*/
+    viewNews("../student/news/viewNews.jsp"),
+    viewNewsDetail("../student/news/viewNewsDetail.jsp"),
     /**
      * -------------------学习--------------------------
      */
