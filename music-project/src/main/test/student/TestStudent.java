@@ -204,10 +204,11 @@ public class TestStudent {
     }
     @Test
     public void test15(){
-        ApplicationContext con = new ClassPathXmlApplicationContext("applicationContext.xml");
-        NewsDao dao = con.getBean("newDao", NewsDao.class);
-
-        System.out.println(dao.selectNewByTitle("new7"));
+        File file = new File("D://test4.xls");
+        if(file.isFile()){
+            file.delete();
+        }
+        System.out.println("success");
 
     }
 }

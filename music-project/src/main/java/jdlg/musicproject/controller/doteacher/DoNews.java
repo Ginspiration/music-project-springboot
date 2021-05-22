@@ -34,7 +34,12 @@ public class DoNews {
     @Resource(name = "newsServiceImpl")
     private NewsService newsService;
 
-    //  x:转发添加新闻页面
+    /**
+     * 转发添加新闻页面
+     * @param request
+     * @param session
+     * @return
+     */
     @GetMapping("/showAddNews")
     public ModelAndView showAddNews(HttpServletRequest request, HttpSession session){
         ModelAndView mv = new ModelAndView();
@@ -44,7 +49,7 @@ public class DoNews {
     }
 
     /**
-     * 添加新闻
+     * 添加新闻（带文件）
      * @param file
      * @param title
      * @param context
@@ -105,7 +110,7 @@ public class DoNews {
         url = url.replace("\\", "\\\\");
         news.setNewImgUrl(url);
         //判断marked
-        if(marked == "marked")
+        if(marked.equals("marked"))
             news.setNewMark(1);
         else
             news.setNewMark(0);
@@ -114,45 +119,43 @@ public class DoNews {
         return 1000;
     }
 
-
     /**
-     * 查看新闻跳转
-     * @param model
-     * @param request
-     * @param session
+     * 添加新闻（不带文件）
+     * @param title
+     * @param context
+     * @param marked
      * @return
+     * tips:file必须放在第一个
      */
-//    @GetMapping("viewNews")
-//    public ModelAndView viewNews(Model model, HttpServletRequest request,
-//                                 HttpSession session){
-//        ModelAndView mv = new ModelAndView();
-//        request.setAttribute("Context", UtilTeacherWebURI.teacherViewNews.getUri());
-//
-//        /*需先查找所有新闻并传送前端*/
-//        //使用pagehelper分页获取
-//        Page<Object> page = PageHelper.startPage(1,5);
-//        List<News> newsList = newsService.selectAllNews();
-//        //获取总页数
-//        int totalPage = page.getPages();
-//        //获取当前页
-//        int nowPage = page.getPageNum();
-//
-////        session设置会话
-//        session.setAttribute("nowPage",nowPage);
-//
-//        session.setAttribute("totalPage", totalPage);
-//
-//        session.setAttribute("news",newsList);
-//
-//
-////        model.addAttribute("nowPage",nowPage);
-////        model.addAttribute("totalpage", totalpage);
-////        model.addAttribute("news",newsList);
-//
-//
-//        mv.setViewName("index/index-teacher");
-//        return mv;
-//    }
+    @ResponseBody
+    @PostMapping("/addNewsNoFile")
+    public int  addNewsNoFile(String title, String context, String marked, HttpServletRequest request){
+        /*对象存储信息*/
+        News news = new News();
+        news.setNewContext(context);
+        //存储标题前，需先查找是否有重复标题
+        List<News> getTitleList = newsService.selectAllNews();
+        for (News news1 : getTitleList) {
+            if( news1.getNewTitle().equals(title) ){
+                System.out.println(news1.getNewTitle());
+                System.out.println(title);
+                return 1002;    //返回错误：标题重复
+            }
+        }
+        news.setNewTitle(title);
+        //由于没有文件，给空字符串
+        String url="";
+        news.setNewImgUrl(url);
+        //判断marked
+        if(marked.equals("marked"))
+            news.setNewMark(1);
+        else
+            news.setNewMark(0);
+        System.out.println(news);
+        newsService.addNew(news);
+        return 1000;
+    }
+
 
     /**
      * 查看新闻列表，并可实现翻页功能
@@ -171,7 +174,8 @@ public class DoNews {
         //求出跳转页数
         nowPage = nowPage + updatePage;
 
-        /*查找对应新闻并传送前端
+        /**
+        * 查找对应新闻并传送前端
         * 使用pagehelper分页获取
         * 通过mark选择对应搜索方法
         * */
@@ -211,6 +215,13 @@ public class DoNews {
         mv.setViewName("index/index-teacher");
         return mv;
     }
+
+    /**
+     * 搜索新闻
+     * @param req
+     * @param session
+     * @return
+     */
     @GetMapping("selectNew")
     public ModelAndView selectNew(HttpServletRequest req,HttpSession session){
 
@@ -248,6 +259,217 @@ public class DoNews {
 
         mv.setViewName("index/index-teacher");
         return mv;
+    }
+
+    @GetMapping("/deleteNew")
+    public ModelAndView deleteNew(String newTitle,
+                                  int nowPage, int updatePage,
+                                  HttpServletRequest request,
+                                  HttpSession session,int mark){
+        System.out.println("delete");
+        newsService.deleteNew(newTitle);
+
+        //删除后再进行查找
+        /**
+        * 查找对应新闻并传送前端
+        * 使用pagehelper分页获取
+        * 通过mark选择对应搜索方法
+        * */
+        Page<Object> page;
+        List<News> newsList;
+        if(mark == 0){
+            page = PageHelper.startPage(nowPage,5);
+            newsList = newsService.selectNewsByMark(0);
+        }else if(mark == 1){
+            page = PageHelper.startPage(nowPage,5);
+            newsList = newsService.selectNewsByMark(1);
+        }else{
+            page = PageHelper.startPage(nowPage,5);
+            newsList = newsService.selectAllNews();
+        }
+        //获取总页数
+        int totalPage = page.getPages();
+        //获取当前页
+        nowPage = page.getPageNum();
+
+        session.removeAttribute("nowPage");
+        session.setAttribute("nowPage",nowPage);
+
+        session.removeAttribute("totalPage");
+        session.setAttribute("totalPage", totalPage);
+
+        session.removeAttribute("news");
+        session.setAttribute("news",newsList);
+
+        session.removeAttribute("mark");
+        session.setAttribute("mark",mark);
+
+        ModelAndView mv = new ModelAndView();
+        request.setAttribute("Context", UtilTeacherWebURI.teacherViewNews.getUri());
+        mv.setViewName("index/index-teacher");
+        return mv;
+    }
+
+    /**
+     * 跳转修改新闻页面
+     * @param request
+     * @param session
+     * @return
+     */
+    @GetMapping("/updateNew")
+    public ModelAndView updateNew(String newTitle,HttpServletRequest request, HttpSession session){
+
+        //搜索出该新闻的所有信息
+        List<News> newsList = newsService.selectNewByTitle(newTitle);
+        News news = newsList.get(0);
+
+        //session传前端值
+        session.setAttribute("newTitle",news.getNewTitle());
+        session.setAttribute("newContext",news.getNewContext());
+        session.setAttribute("newMark",news.getNewMark());
+
+        ModelAndView mv = new ModelAndView();
+        request.setAttribute("Context", UtilTeacherWebURI.teacherUpdateNew.getUri());
+        mv.setViewName("index/index-teacher");
+        return mv;
+    }
+
+    /**
+     * 修改新闻（不修改文件）
+     * @param title
+     * @param context
+     * @param marked    1：标记为推荐新闻
+     *                  2：标记为普通新闻
+     * @param radio 1：添加更多图片（若无图片则不添加）
+     *              2：删除原先图片后添加（若无图片则只删除图片）
+     *              3：不更改图片
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/upDateNewNoFile")
+    public int  upDateNewNoFile(String title, String context, String marked, int radio, HttpServletRequest request){
+
+        /*获取原先新闻对象*/
+        List<News> newsList = newsService.selectNewByTitle(title);
+        News news1 = newsList.get(0);   //
+
+        /*对象存储信息*/
+        News news = new News();
+
+        //存储内容
+        news.setNewContext(context);
+
+        //检查标题是否有在数据库中
+        if(news1.getNewTitle() == null){
+            return 1002;
+        }
+        news.setNewTitle(title);
+
+        //存储url
+        String url="";
+        //需先确定radio类型
+        if(radio == 1 || radio == 3) {  // 1.不添加图片
+            url = news1.getNewImgUrl();
+        }else if(radio == 2){   //删除图片
+            url = "";
+        }
+        news.setNewImgUrl(url);
+
+        //判断并存储marked
+        if(marked.equals("marked"))
+            news.setNewMark(1);
+        else
+            news.setNewMark(0);
+
+        System.out.println(news);
+        newsService.updateNew(news);
+        return 1000;
+    }
+
+    /**
+     * 修改新闻
+     * @param title
+     * @param context
+     * @param marked    1：标记为推荐新闻
+     *                  2：标记为普通新闻
+     * @param radio 1：添加更多图片
+     *              2：删除原先图片后添加
+     *              3：不更改图片
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @PostMapping("/upDateNew")
+    public int  upDateNew(@RequestParam("files") CommonsMultipartFile[] file,String title, String context, String marked, int radio, HttpServletRequest request){
+
+        String path = request.getSession().getServletContext().getRealPath("/static/newsImg");
+        File filePath = new File(path);
+        if (!filePath.exists()){
+            filePath.mkdir();
+        }
+        //上传文件地址并保存realPath
+        System.out.println("上传文件保存地址："+filePath);
+
+        //通过CommonsMultipartFile的方法直接写文件（注意这个时候）
+        for(int i = 0; i < file.length ; i++){
+            MultipartFile file1 = file[i];
+            try {
+                File file2 = new File(filePath + "/" + file[i].getOriginalFilename());
+                file1.transferTo(file2);
+            } catch (IOException e) {
+                return 1001; //返回1001：文件上传失败
+            }
+        }
+
+        /*获取原先新闻对象*/
+        List<News> newsList = newsService.selectNewByTitle(title);
+        News news1 = newsList.get(0);   //
+
+        /*对象存储信息*/
+        News news = new News();
+
+        //存储内容
+        news.setNewContext(context);
+
+        //检查标题是否有在数据库中
+        if(news1.getNewTitle() == null){
+            return 1002;
+        }
+        news.setNewTitle(title);
+
+        //对于文件路径，需循环保存，且为webapp的相对地址realPath。分隔符为&*&
+        String realPath = "static/newsImg/";
+        String url = "";
+        for (int i = 0;i < file.length; i++){
+            if( i < file.length-1){
+                url += realPath + file[i].getOriginalFilename() + "&*&";
+            }else
+                url += realPath + file[i].getOriginalFilename();
+            System.out.println(url);
+        }
+        //文件路径转义
+        url = url.replace("\\", "\\\\");
+
+        //需先确定radio类型
+        if(radio == 1) {  // 1.添加图片
+            url = news1.getNewImgUrl() + url;
+        }else if(radio == 2){   //删除图片
+            url = url;
+        }else if(radio == 3){
+            url = news1.getNewImgUrl();
+        }
+        news.setNewImgUrl(url);
+
+        //判断并存储marked
+        if(marked.equals("marked"))
+            news.setNewMark(1);
+        else
+            news.setNewMark(0);
+
+        System.out.println(news);
+        newsService.updateNew(news);
+        return 1000;
     }
 
 }

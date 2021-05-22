@@ -13,9 +13,51 @@
         }
     }
 
+    $(function () {
+        //Tab键排版
+        $("textarea").on(
+            'keydown',
+            function (e) {
+                if (e.keyCode == 9) {
+                    e.preventDefault();
+                    var indent = '       ';
+                    var start = this.selectionStart;
+                    var end = this.selectionEnd;
+                    var selected = window.getSelection().toString();
+                    selected = indent + selected.replace(/\n/g, '\n' + indent);
+                    this.value = this.value.substring(0, start) + selected
+                        + this.value.substring(end);
+                    this.setSelectionRange(start + indent.length, start
+                        + selected.length);
+                }
+            }
+        )
+
+        //给新闻内容赋值
+        let context;
+        context = "${newContext}"
+        context = context.replace(/<br\/>/g,"\n")
+        document.getElementById("context").innerHTML = context
+    })
+
     /*通过提交按钮执行提交函数*/
     function dosubmit() {
 
+        //定义变量radio
+        let radio
+        //确定radio被谁选中，以决定文件上传方式
+        if( document.getElementById("optionsRadios1").checked == true)
+            radio = 1
+        else if( document.getElementById("optionsRadios2").checked == true)
+            radio = 2
+        else if( document.getElementById("optionsRadios3").checked == true)
+            radio = 3
+        else{
+            alert("需要选择上传图片方式")
+            return
+        }
+
+        //做修改函数
         //文件的有无决定了请求的不同，所以需先判断
         if( document.getElementById("file").value == '') {
             let thisData = new FormData();
@@ -33,6 +75,7 @@
             //若标题不为空，则进行提交处理
             if ( title == "" ) {
                 alert("标题不能为空");
+                return
             }
             else{
                 //将其他类型的数据放入formDate
@@ -44,12 +87,12 @@
                 context = context.replace(/\n/g,"<br/>")
                 thisData.append("context",context)
                 thisData.append("marked",marked)
+                thisData.append("radio",radio)
 
-                //sleep
                 console.log(thisData)
                 // 4、ajax提交文件给后端
                 $.ajax({
-                    url:'addNewsNoFile',
+                    url:'upDateNewNoFile',
                     type: 'post',
                     data: thisData,
                     dataType: 'text',
@@ -62,7 +105,7 @@
                     success: function (data) {
                         if ( data == 1000){
                             confirm({
-                                title: '添加成功',
+                                title: '修改成功',
                                 content: '',
                                 doneText: '确认',
                             }).then(() => {
@@ -72,7 +115,7 @@
                             })``
 
                         }else if(data == 1002){
-                            alert("标题重复")
+                            alert("标题不存在")
                             title = "";
                         }
                     }
@@ -80,6 +123,7 @@
             }
         }
         else{
+
             let thisData = new FormData();
             let marked
 
@@ -120,12 +164,13 @@
                 context = context.replace(/\n/g,"<br/>")
                 thisData.append("context",context)
                 thisData.append("marked",marked)
+                thisData.append("radio",radio)
 
                 //sleep
                 console.log(thisData)
                 // 4、ajax提交文件给后端
                 $.ajax({
-                    url:'addNews',
+                    url:'upDateNew',
                     type: 'post',
                     data: thisData,
                     dataType: 'text',
@@ -160,31 +205,6 @@
 
     }
 
-    $(function () {
-        //Tab键排版
-        $("textarea").on(
-            'keydown',
-            function (e) {
-                if (e.keyCode == 9) {
-                    e.preventDefault();
-                    var indent = '       ';
-                    var start = this.selectionStart;
-                    var end = this.selectionEnd;
-                    var selected = window.getSelection().toString();
-                    selected = indent + selected.replace(/\n/g, '\n' + indent);
-                    this.value = this.value.substring(0, start) + selected
-                        + this.value.substring(end);
-                    this.setSelectionRange(start + indent.length, start
-                        + selected.length);
-                }
-            }
-        )
-    })
-
-    function x() {
-
-    }
-
 </script>
 
 <div class="content-wrapper">
@@ -206,7 +226,7 @@
                         <div class="form-group">
                             <form action="" role="form" id="formNews"  method="post" enctype="multipart/form-data">
                                 <label>新闻标题</label>
-                                <input type="text" class="form-control" name="title" onblur="checkTitleNull()"><span id="titleInfo"></span><br/>
+                                <input type="text" class="form-control" value="${newTitle}" name="title" onblur="checkTitleNull()"><span id="titleInfo"></span><br/>
                                 <label>新闻内容</label>
 
                                 <%--新闻内容输入框--%>
@@ -225,19 +245,42 @@
                                     </div>
                                     <!-- /.box-header -->
                                     <div class="box-body pad">
-                                                <textarea  name="context" class="textarea"  onblur="a()" id="context"
+                                                <textarea  name="context"  class="textarea"  onblur="a()" id="context"
                                                            style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
                                     </div>
                                 </div>
+
                                 <label>图片添加</label>
-                                <input type="file" onclick="" multiple="multiple" id="file"/><br/>
+                                <input type="file" onclick="" multiple="multiple" id="file"/>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" style="" id="optionsRadios1" value="option1" >
+                                        添加更多图片（若无图片则不添加）
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" style=""  id="optionsRadios2" value="option2">
+                                        删除原先图片后添加（若无图片则只删除图片）
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="optionsRadios" style=""  id="optionsRadios3" value="option3">
+                                        不更改图片
+                                    </label>
+                                </div>
+
+                                <br/>
+                                <br/>
+
                                 <label class="checkbox-inline">
                                     <input type="checkbox" id="mark" value="marked"> 标记为推荐新闻   <%--值有误--%>
                                 </label>
                                 <br>
                                 <br>
-                                <div class="container mt-5 mb-5" style="">
-                                    <input type="button" class="btn btn-success" id="toast" onclick="dosubmit()" value="提交新闻"></input>
+                                <div class="container mt-5 mb-5" >
+                                    <input type="button" style="left:10px" class="btn btn-success" id="toast" onclick="dosubmit()" value="提交新闻"></input>
                                 </div>
                             </form>
                         </div>

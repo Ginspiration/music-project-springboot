@@ -1,8 +1,9 @@
 <%@include file="../../pages/web-url.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js"></script>
 <script>
+
 
     //判断新闻类型决定导航active
     window.onload = function(){
@@ -14,7 +15,18 @@
         }else if( mark == 0){
             document.getElementById("nav3").className="active"
         }
+
+
+
     }
+
+
+
+    // $(function () {
+    //     $('#delete').on('click', function () {
+    //
+    //     })
+    // })
 
 
 
@@ -50,7 +62,7 @@
                                 <c:otherwise>
                                     <ul class="nav nav-tabs">
                                         <li role="presentation" id="nav1"><a href="viewNews?nowPage=1&updatePage=0&mark=2">所有新闻</a></li>
-                                        <li role="presentation" id="nav2"><a href="viewNews?nowPage=1&updatePage=0&mark=1">标记新闻</a></li>
+                                        <li role="presentation" id="nav2"><a href="viewNews?nowPage=1&updatePage=0&mark=1">推荐新闻</a></li>
                                         <li role="presentation" id="nav3"><a href="viewNews?nowPage=1&updatePage=0&mark=0">普通新闻</a></li>
                                     </ul>
                                 </c:otherwise>
@@ -69,15 +81,30 @@
                 </div>
 
                     <%--新闻展示--%>
-                    <c:forEach items="${news}" var="news">
+                    <c:forEach items="${news}" var="news" varStatus="status">
                         <div class="panel panel-default">
                             <div class="panel-body" style="">
                                 <%--展示标题--%>
                                     <%--对标记新闻进行特别注释--%>
                                     <div style="float: left;margin-right: 10px">&nbsp;<c:if test="${news.newMark == 1}">*</c:if></div>
                                 <a href="newsDetail?newTitle=${news.newTitle}" >${news.newTitle} </a>
-                                    <a href="" class="btn btn-danger" style="float: right;margin-left: 10px;">删除</a>
-                                    <a href="" class="btn btn-danger" style="float: right">修改</a>
+                                    <button id="delete" onclick="deleteNew${status.count}()" class="btn btn-danger" style="float: right;margin-left: 10px;">删除</button>
+                                    <a href="updateNew?newTitle=${news.newTitle}" class="btn btn-danger" style="float: right">修改</a>
+                                    <script>
+                                        //删除新闻
+                                        function deleteNew${status.count}() {
+                                            confirm({
+                                                title: '确认删除？',
+                                                content: '',
+                                                doneText: '确认',
+                                                cancelText: '取消'
+                                            }).then(() => {
+                                                window.location.href="deleteNew?newTitle=${news.newTitle}&nowPage=${nowPage}&updatePage=0&mark=${mark}"
+                                            }).catch(() => {
+                                                alert("33")
+                                            })``
+                                        }
+                                    </script>
                                 <%--展示发布时间--%>
                                 <span style="font-size: 10px;
                                 color:#8a8a8a;
@@ -123,9 +150,7 @@
                     </div>
                 </div>
             </div>
-
     </section>
-
-
 </div>
+
 
