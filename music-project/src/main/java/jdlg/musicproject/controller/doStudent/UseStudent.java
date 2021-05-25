@@ -1,7 +1,9 @@
 package jdlg.musicproject.controller.doStudent;
 
 import jdlg.musicproject.entries.common.Courses;
+import jdlg.musicproject.entries.common.News;
 import jdlg.musicproject.entries.student.StudentGrade;
+import jdlg.musicproject.service.NewsService;
 import jdlg.musicproject.service.StudentService;
 import jdlg.musicproject.service.TeacherService;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ public class UseStudent {
     StudentService studentService;
     @Resource(name = "teacherServiceImpl")
     TeacherService teacherService;
+    @Resource(name = "newsServiceImpl")
+    private NewsService newsService;
 
     @RequestMapping("/indexStudent")
     public ModelAndView indexStudent(HttpSession session, HttpServletRequest request) throws UnsupportedEncodingException {
@@ -58,6 +62,11 @@ public class UseStudent {
         if (courseNames.size() != 0) {
             session.setAttribute("unDoCourse", courseNames);
         }
+
+        /*获取新闻列表*/
+        List<News> newsList = newsService.selectNewsByMark(1);
+        session.setAttribute("news",newsList);
+
         mv.setViewName("index/index-student");
         return mv;
     }

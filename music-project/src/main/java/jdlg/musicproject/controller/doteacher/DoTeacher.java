@@ -1,5 +1,7 @@
 package jdlg.musicproject.controller.doteacher;
 
+import jdlg.musicproject.entries.common.News;
+import jdlg.musicproject.service.NewsService;
 import jdlg.musicproject.service.StudentService;
 import jdlg.musicproject.service.TeacherService;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
+import java.util.List;
 
 @Controller
 @RequestMapping("/doTeacher")
@@ -19,6 +22,8 @@ public class DoTeacher {
     StudentService studentService;
     @Resource(name = "teacherServiceImpl")
     TeacherService teacherService;
+    @Resource(name = "newsServiceImpl")
+    private NewsService newsService;
 
     /*跳转到教师网站*/
     @RequestMapping("/indexTeacher")
@@ -46,6 +51,10 @@ public class DoTeacher {
 //        Integer tId = Integer.parseInt(tIdString);
 //        session.setAttribute("tName", tName);
 //        session.setAttribute("tId", tId);
+
+        /*获取新闻列表*/
+        List<News> newsList = newsService.selectNewsByMark(1);
+        session.setAttribute("news",newsList);
 
         mv.setViewName("index/index-teacher");
         return mv;

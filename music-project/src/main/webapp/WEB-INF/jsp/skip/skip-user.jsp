@@ -12,6 +12,7 @@
 <body>
 <div align="center">
     <%
+
         String tName = (String) session.getAttribute("tName");
         Integer tchIdInteger = (Integer) session.getAttribute("tId");
         String tId = String.valueOf(tchIdInteger);
