@@ -10,7 +10,7 @@
     <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-
+    <script src="<%=basePath%>static/plugins/jQuery/jquery-2.2.3.min.js"></script>
     <link rel="stylesheet" href="<%=basePath%>static/plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<%=basePath%>static/plugins/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="<%=basePath%>static/plugins/ionicons/css/ionicons.min.css">
@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="<%=basePath%>static/plugins/ionslider/ion.rangeSlider.skinNice.css">
     <link rel="stylesheet" href="<%=basePath%>static/plugins/bootstrap-slider/slider.css">
     <link rel="stylesheet" href="<%=basePath%>static/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.css">
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js"></script>
+
 </head>
 
 <body class="hold-transition skin-purple sidebar-mini">
@@ -361,9 +361,9 @@
         <!-- 正文区域 -->
         <section class="content">
             <div class="row">
-            <c:forEach items="${news}" var="news" varStatus="status">
+                <c:forEach items="${news}" var="news" varStatus="status">
 
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <!-- Box Comment -->
                         <div class="box box-widget">
                             <div class="box-header with-border">
@@ -390,7 +390,7 @@
                                 <p>${news.newContext}</p>
 
                                 <!-- Attachment -->
-                                <div class="attachment-block clearfix"  id="pic${status.count}">
+                                <div class="clearfix"  id="pic${status.count}">
 
                                     <script>
                                         $(function () {
@@ -398,9 +398,10 @@
                                             let pic = "${news.newImgUrl}"
                                             pic = pic.split("&*&")
                                             if(pic != ""){
+                                                $("#pic${status.count}").append("<hr size='100px' />");
                                                 for (let i = 0; i < pic.length; i++) {
                                                     $("#pic${status.count}").append("<img class='attachment-img' " +
-                                                        "style='margin-left:5px' " +
+                                                        "style='margin-left:5px;width:100px' " +
                                                         "src='<%=basePath%>" + pic[i] + "' />")
                                                 }
                                             }
@@ -420,7 +421,7 @@
                     </div>
                     <!-- /.col -->
 
-            </c:forEach>
+                </c:forEach>
             </div>
             <!-- /.row -->
 
@@ -488,6 +489,7 @@
 <script src="<%=basePath%>static/plugins/bootstrap-slider/bootstrap-slider.js"></script>
 <script src="<%=basePath%>static/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.js"></script>
 <script src="<%=basePath%>static/plugins/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+
 <script>
     $(document).ready(function () {
         // 选择框
@@ -515,6 +517,18 @@
         setSidebarActive("admin-index");
     });
 </script>
+
+<style>
+    /*内嵌水平线*/
+    hr.style-one {
+        width: 80%;
+        margin: 0 auto;
+        border: 0;
+        height: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+</style>
 </body>
 
 </html>

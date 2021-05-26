@@ -1,7 +1,7 @@
 <%@include file="../../pages/web-url.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.5.1.min.js"></script>
+<script src="<%=basePath%>static/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <script>
 
 
@@ -16,19 +16,30 @@
             document.getElementById("nav3").className="active"
         }
 
+        /*分页判断是否为最后一页并跳页*/
+        $('#downPage').click(function () {
+            let nowPage = ${nowPage};
+            let totalPages = ${totalPage}
 
+            if (nowPage < totalPages) {
+                window.location.href = "viewNews?nowPage=${nowPage}&updatePage=1&mark=${mark}"
+            } else
+                AstNotif.notify('已是最后一页！');
+
+        })
+
+        /*判断是否为第一页并跳页*/
+        $('#upPage').click(function () {
+            let nowPage = ${nowPage};
+            let totalPages = ${totalPage}
+
+            if (nowPage > 1) {
+                window.location.href = "viewNews?nowPage=${nowPage}&updatePage=-1&mark=${mark}"
+            } else
+                AstNotif.notify('已是第一页！');
+        })
 
     }
-
-
-
-    // $(function () {
-    //     $('#delete').on('click', function () {
-    //
-    //     })
-    // })
-
-
 
 </script>
 
@@ -120,9 +131,9 @@
                         <li id='totalPages'><a>共${totalPage}页</a></li>
                         <li><a href="viewNews?nowPage=1&updatePage=0&mark=${mark}">首页</a></li>
                         <li><a>第</a></li>
-                        <li><a href="viewNews?nowPage=${nowPage}&updatePage=-1&mark=${mark}">&laquo;</a></li>     <%--左箭头--%>
+                        <li><a  id="upPage">&laquo;</a></li>     <%--左箭头--%>
                         <li><a> ${nowPage} </a></li>
-                        <li><a href="viewNews?nowPage=${nowPage}&updatePage=1&mark=${mark}">&raquo;</a></li>               <%--右箭头--%>
+                        <li><a  id="downPage">&raquo;</a></li>               <%--右箭头--%>
                         <li><a>页</a></li>
                         <li><a href="viewNews?nowPage=${totalPage}&updatePage=0&mark=${mark}">尾页</a></li>
                     </ul>

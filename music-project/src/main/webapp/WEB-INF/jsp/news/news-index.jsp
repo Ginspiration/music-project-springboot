@@ -14,7 +14,7 @@
         <div class="row">
             <c:forEach items="${news}" var="news" varStatus="status">
 
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <!-- Box Comment -->
                     <div class="box box-widget">
                         <div class="box-header with-border">
@@ -41,7 +41,7 @@
                             <p>${news.newContext}</p>
 
                             <!-- Attachment -->
-                            <div class="attachment-block clearfix"  id="pic${status.count}">
+                            <div class="clearfix"  id="pic${status.count}">
 
                                 <script>
                                     $(function () {
@@ -49,6 +49,7 @@
                                         let pic = "${news.newImgUrl}"
                                         pic = pic.split("&*&")
                                         if(pic != ""){
+                                            $("#pic${status.count}").append("<hr size='100px' />");
                                             for (let i = 0; i < pic.length; i++) {
                                                 $("#pic${status.count}").append("<img class='attachment-img' " +
                                                     "style='margin-left:5px' " +
